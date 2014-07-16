@@ -40,5 +40,9 @@
 	.select-folder-container {
 		margin: 0 0 10px 20px;
 		display: none;
+		
+		.TreeDropdownField {
+			max-width: 624px;
+		}
 	}
 }

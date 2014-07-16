@@ -42,7 +42,9 @@
 					<% if $canSelectFolder %>
 						<small><% _t('UploadField.ADDTO', 'Add to') %>
 							<span class="change-folder">
-								<strong class="folder-name">$DisplayFolderName</strong>
+								<strong class="folder-name">
+									<%t UploadField.FILESPATH 'Files / {path}' path=$DisplayFolderName %>
+								</strong>
 								<span class="change">(change)</span>
 							</span>
 						</small>

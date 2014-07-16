@@ -16,3 +16,4 @@
 .ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder .change { font-weight: normal; }
 .ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder:hover { text-decoration: underline; }
 .ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .select-folder-container { margin: 0 0 10px 20px; display: none; }
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .select-folder-container .TreeDropdownField { max-width: 624px; }
