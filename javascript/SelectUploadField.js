@@ -43,7 +43,7 @@
 	
 	$.entwine('ss', function($) {
 
-		$('div.ss-upload.ss-selectupload').entwine({
+		$('div.ss-upload.ss-selectuploadfield').entwine({
 			onmatch: function() {
 				this._super();
 				// Update the 'formData' method
@@ -59,6 +59,19 @@
 						return data;
 					}
 				});
+			}
+		});
+		
+		$('div.ss-upload.ss-selectuploadfield .ss-uploadfield-item-name .change-folder').entwine({
+			onclick: function() {
+				var folder = $(this)
+					.closest('div.ss-upload.ss-selectuploadfield')
+					.find('.SelectFolderContainer');
+				if(folder.is(":visible")) {
+					folder.fadeOut(200);
+				} else {
+					folder.fadeIn(200);
+				}
 			}
 		});
 	});

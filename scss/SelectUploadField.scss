@@ -1,0 +1,22 @@
+@import '../../framework/admin/scss/themes/default';
+
+.ss-selectuploadfield .ss-uploadfield-item {
+	overflow: visible;
+	
+	.ss-uploadfield-item-info {
+		
+		.ss-uploadfield-item-name .change-folder {
+			color: $color-text-blue-link;
+			cursor: pointer;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		
+		.SelectFolderContainer {
+			margin: 0 0 10px 0;
+			display: none;
+		}
+	}
+}
