@@ -8,6 +8,12 @@
  */
 class SelectUploadField extends UploadField {
 
+	private static $casting = array(
+		'DefaultFolderName' => 'Text',
+		'FolderName' => 'Text',
+		'DisplayFolderName' => 'Text'
+	);
+
 	private static $url_handlers = array(
 		'folder/tree/$ID' => 'tree'
 	);
@@ -36,6 +42,7 @@ class SelectUploadField extends UploadField {
 	public function __construct($name, $title = null, \SS_List $items = null) {
 		parent::__construct($name, $title, $items);
 
+		$this->addExtraClass('ss-selectupload'); // class, used by js
 		$this->addExtraClass('ss-selectuploadfield'); // class, used by css for selectuploadfield onl
 
 		$this->selectField = FolderDropdownField::create("{$name}/folder")
@@ -78,8 +85,8 @@ class SelectUploadField extends UploadField {
 	}
 
 	public function setForm($form) {
-		parent::setForm($form);
 		$this->selectField->setForm($form);
+		return parent::setForm($form);
 	}
 
 	public function Type() {

@@ -39,18 +39,23 @@
 			<% end_if %>
 			<div class="ss-uploadfield-item-info">
 				<label class="ss-uploadfield-item-name">
-					<% if canSelectFolder %>
-						<small><%t UploadField.CHANGEADDTOFILES 'Add to <span class="change-folder">{path} (change)</span>' path=$DisplayFolderName %></small>
+					<% if $canSelectFolder %>
+						<small><% _t('UploadField.ADDTO', 'Add to') %>
+							<span class="change-folder">
+								<strong class="folder-name">$DisplayFolderName</strong>
+								<span class="change">(change)</span>
+							</span>
+						</small>
 					<% else_if $canPreviewFolderx %>
-						<small><%t UploadField.ADDTOFILES 'Add to {path}' path=$DisplayFolderName %></small>
+						<small><% _t('UploadField.ADDTO', 'Add to') %> <strong>$DisplayFolderName</strong></small>
 					<% else_if $multiple %>
-						<b><% _t('UploadField.ATTACHFILES', 'Attach files') %></b>
+						<small><% _t('UploadField.ATTACHFILES', 'Attach files') %></small>
 					<% else %>
-						<b><% _t('UploadField.ATTACHFILE', 'Attach a file') %></b>
+						<small><% _t('UploadField.ATTACHFILE', 'Attach a file') %></small>
 					<% end_if %>
 				</label>
 				<% if $canSelectFolder %><% with FolderSelector %>
-					<div class="SelectFolderContainer">
+					<div class="select-folder-container">
 						$Field
 					</div>
 				<% end_with %><% end_if %>

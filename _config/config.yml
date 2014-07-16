@@ -1,0 +1,6 @@
+---
+Name: selectuploadconfig
+---
+HtmlEditorField_Toolbar:
+  extensions:
+    - SelectHtmlEditorFieldExtension

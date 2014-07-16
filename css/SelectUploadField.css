@@ -10,4 +10,9 @@
 .ss-selectuploadfield .ss-uploadfield-item { overflow: visible; }
 .ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder { color: #0073c1; cursor: pointer; }
 .ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder:hover { text-decoration: underline; }
-.ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .SelectFolderContainer { margin: 0 0 10px 0; display: none; }
+.ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .select-folder-container { margin: 0 0 10px 0; display: none; }
+
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder { color: #0073c1; cursor: pointer; }
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder .change { font-weight: normal; }
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder:hover { text-decoration: underline; }
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .select-folder-container { margin: 0 0 10px 20px; display: none; }

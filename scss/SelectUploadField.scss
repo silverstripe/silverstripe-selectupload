@@ -14,9 +14,31 @@
 			}
 		}
 		
-		.SelectFolderContainer {
+		.select-folder-container {
 			margin: 0 0 10px 0;
 			display: none;
 		}
+	}
+}
+
+// HtmlEditorField MediaForm
+.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile {
+	
+	.step-label .change-folder {
+		color: $color-text-blue-link;
+		cursor: pointer;
+
+		.change {
+			font-weight: normal;
+		}
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+		
+	.select-folder-container {
+		margin: 0 0 10px 20px;
+		display: none;
 	}
 }

@@ -43,7 +43,7 @@
 	
 	$.entwine('ss', function($) {
 
-		$('div.ss-upload.ss-selectuploadfield').entwine({
+		$('div.ss-upload.ss-selectupload').entwine({
 			onmatch: function() {
 				this._super();
 				// Update the 'formData' method
@@ -62,11 +62,11 @@
 			}
 		});
 		
-		$('div.ss-upload.ss-selectuploadfield .ss-uploadfield-item-name .change-folder').entwine({
+		$('div.ss-upload.ss-selectupload .change-folder').entwine({
 			onclick: function() {
 				var folder = $(this)
-					.closest('div.ss-upload.ss-selectuploadfield')
-					.find('.SelectFolderContainer');
+					.closest('div.ss-upload.ss-selectupload')
+					.find('.select-folder-container');
 				if(folder.is(":visible")) {
 					folder.fadeOut(200);
 				} else {
