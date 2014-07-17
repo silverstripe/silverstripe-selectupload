@@ -107,7 +107,7 @@ class SelectUploadField extends UploadField {
 		$path = $this->folderPathFromID($folderID);
 		if($path !== false) {
 			$this->setFolderName($path);
-			FolderDropdownField::set_last_folder($folderID);
+			$this->selectField->setValue($folderID);
 		}
 	}
 
@@ -173,7 +173,7 @@ class SelectUploadField extends UploadField {
 	public function getFolderName() {
 		// Ensure that, if this member is allowed, the persistant folder overrides any default set
 		if($this->canSelectFolder()) {
-			$path = $this->folderPathFromID(FolderDropdownField::get_last_folder());
+			$path = $this->folderPathFromID($this->selectField->Value());
 			if($path !== false) return $path;
 		}
 		return $this->getDefaultFolderName();
