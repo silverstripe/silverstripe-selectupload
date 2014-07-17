@@ -30,4 +30,9 @@ class FolderDropdownField extends TreeDropdownField {
 	public static function get_last_folder() {
 		return Session::get(get_class().'.FolderID');
 	}
+
+	public function setValue($value) {
+		if($value) self::set_last_folder($value);
+		parent::setValue($value);
+	}
 }

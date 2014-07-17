@@ -6,6 +6,7 @@
 			var config = this.options;
 			if (config.overwriteWarning) {
 				var request = {'filename': data.files[0].name};
+				// Detect the selected folder if the selector exists
 				var folder = that.element.find(".FolderSelector input");
 				if(folder.length) request[folder.attr('name')] = folder.val();
 				$.get(
@@ -48,14 +49,16 @@
 				this._super();
 				// Update the 'formData' method
 				var self = this;
+				var oldOption = this.fileupload('option', 'formData');
 				this.fileupload('option', {	
 					formData: function(form) {
-						var idVal = $(form).find(':input[name=ID]').val();
-						var folder = self.find(".FolderSelector input");
-						var data = [{name: 'SecurityID', value: $(form).find(':input[name=SecurityID]').val()}];
-						if(idVal) data.push({name: 'ID', value: idVal});
-						if(folder.length) data.push({name: folder.attr('name'), value: folder.val()});
-
+						var data = oldOption(form);
+						self.find(".FolderSelector input[name]").each(function() {
+							data.push({
+								name: $(this).attr('name'),
+								value: $(this).val()
+							});
+						});
 						return data;
 					}
 				});
