@@ -31,6 +31,19 @@ $field = SelectUploadField::create('MyImage', 'My Image')
 	->setCanSelectFolder('ADMIN') // So that only important people can select any folder
 ```
 
+If you wish to replace ALL instances with this field type, you can simply use dependency injection
+to specify a custom class
+
+In your mysite/_config/config.yml
+
+```yml
+---
+Name: mysettings
+---
+Injector:
+  UploadField: SelectUploadField
+```
+
 This field appears as below:
 
 ![Sample SelectUploadField](docs/en/_images/SelectUpload.png)
