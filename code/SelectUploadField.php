@@ -23,6 +23,16 @@ class SelectUploadField extends UploadField {
 	);
 
 	/**
+	 * List of templates for which to disable folder selection.
+	 *
+	 * @config
+	 * @var array
+	 */
+	private static $disable_for_templates = array(
+		'AssetUploadField' // Disable folder selection if this field is used in the AssetAdmin
+	);
+
+	/**
 	 * Set default permission for selecting folders
 	 *
 	 * @var array
@@ -166,6 +176,8 @@ class SelectUploadField extends UploadField {
 	 */
 	public function canSelectFolder() {
 		if(!$this->isActive()) return false;
+		if($this->template && in_array($this->template, self::config()->disable_for_templates)) return false;
+		// Check config
 		$can = $this->getConfig('canSelectFolder');
 		return (is_bool($can)) ? $can : Permission::check($can);
 	}
