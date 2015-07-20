@@ -1,4 +1,6 @@
-language: php 
+language: php
+
+sudo: false
 
 php: 
  - 5.3
