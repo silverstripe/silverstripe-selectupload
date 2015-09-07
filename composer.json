@@ -2,7 +2,7 @@
 	"name": "silverstripe/selectupload",
 	"description": "Enables files to be uploaded into a user-designated folder",
 	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "upload", "file"],
+	"keywords": ["silverstripe", "upload", "file", "cwp"],
     "license": "BSD-3-Clause",
 	"authors": [
 		{
