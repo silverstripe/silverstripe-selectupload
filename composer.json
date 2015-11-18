@@ -18,5 +18,12 @@
 	},
 	"support": {
 		"issues": "https://github.com/silverstripe-labs/silverstripe-selectupload/issues"
+	},
+	"extra": 
+	{
+		"branch-alias": 
+		{
+			"dev-master": "1.0.x-dev"
+		}
 	}
 }
