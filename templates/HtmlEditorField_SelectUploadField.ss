@@ -13,7 +13,7 @@
 							<span class="change">(change)</span>
 						</span>
 					</small>
-				<% else_if $canPreviewFolderx %>
+				<% else_if $canPreviewFolder %>
 					<small><% _t('UploadField.ADDTO', 'Add to') %> <strong>$DisplayFolderName</strong></small>
 				<% else %>
 					<small><% _t('AssetUploadField.ChooseFiles', 'Choose files') %></small>
@@ -21,7 +21,7 @@
 			</span>
 		</span>
 	</h4>
-	
+
 	<% if $canSelectFolder %><% with FolderSelector %>
 		<div class="select-folder-container">
 			$Field
