@@ -8,7 +8,7 @@ This module introduces an extended version of the `UploadField`, called `SelectU
 This allows users to select the folder that they wish to upload newly added files to,
 rather than forcing users to upload to a pre-configured folder.
 
-This module also by default replaces the existing HtmlEditor media upload form with an 
+This module also by default replaces the existing HtmlEditor media upload form with an
 extended version with the same functionality.
 
 The folder selection will be remembered for that user, so that if they are uploading files
@@ -17,7 +17,7 @@ change the destination folder.
 
 ## Installation
 
-If you have [composer](https://getcomposer.org/) you can install using `composer install silverstripe/selectupload:*`
+If you have [composer](https://getcomposer.org/) you can install using `composer require silverstripe/selectupload:*`
 
 Otherwise, download the project as a zip archive and extract into the `selectupload` folder.
 
