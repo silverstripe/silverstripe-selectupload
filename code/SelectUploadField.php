@@ -102,6 +102,14 @@ class SelectUploadField extends UploadField {
 	public function Type() {
 		return 'selectupload upload';
 	}
+    
+    public function setFolderName($folderName)
+    {
+        $this->folderName = $folderName;
+        $folderID = $this->folderIDFromPath($folderName);
+        if ($folderID) $this->selectField->setValue($folderID);
+        return $this;
+    }
 
 	/**
 	 * Given a request, ensure that the current field is aware of the selected folder
@@ -117,7 +125,6 @@ class SelectUploadField extends UploadField {
 		$path = $this->folderPathFromID($folderID);
 		if($path !== false) {
 			$this->setFolderName($path);
-			$this->selectField->setValue($folderID);
 		}
 	}
 
