@@ -109,15 +109,11 @@ class SelectUploadField extends UploadField {
 	 * @param SS_HTTPRequest $request
 	 */
 	protected function updateFolderName($request) {
-		// check if allowed to select folder
-		if(!$this->canSelectFolder()) return;
-
-		// Get path from upload
-		$folderID = $request->requestVar("{$this->Name}/folder");
-		$path = $this->folderPathFromID($folderID);
-		if($path !== false) {
-			$this->setFolderName($path);
-			$this->selectField->setValue($folderID);
+		if($file = File::get()->byid($request->param("ID"))) {
+			if($folder = Folder::get()->byid($file->ParentID)) {
+				$this->setFolderName($folder->getFilename());
+				$this->selectField->setValue($folder->ID);
+			}
 		}
 	}
 
