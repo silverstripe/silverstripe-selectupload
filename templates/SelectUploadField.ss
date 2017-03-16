@@ -48,7 +48,7 @@
 								<span class="change">(change)</span>
 							</span>
 						</small>
-					<% else_if $canPreviewFolderx %>
+					<% else_if $canPreviewFolder %>
 						<small><% _t('UploadField.ADDTO', 'Add to') %> <strong>$DisplayFolderName</strong></small>
 					<% else_if $multiple %>
 						<small><% _t('UploadField.ATTACHFILES', 'Attach files') %></small>
