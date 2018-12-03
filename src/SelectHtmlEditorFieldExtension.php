@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\SelectUpload;
+
 class SelectHtmlEditorFieldExtension extends Extension {
 
 	/**

@@ -1,4 +1,5 @@
 <?php
+namespace SilverStripe\SelectUpload;
 
 /**
  * Represents a TreeDropdownField for folders which remembers the last folder selected
