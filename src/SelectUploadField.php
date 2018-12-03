@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\SelectUpload;
+
 /**
  * A composite form field which allows users to select a folder into which files may be uploaded
  *
