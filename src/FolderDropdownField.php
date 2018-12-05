@@ -2,6 +2,9 @@
 
 namespace SilverStripe\SelectUpload;
 
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Control\Session;
@@ -15,7 +18,7 @@ class FolderDropdownField extends TreeDropdownField
     public function __construct(
         $name,
         $title = null,
-        $sourceObject = 'Folder',
+        $sourceObject = Folder::class,
         $keyField = 'ID',
         $labelField = 'TreeTitle',
         $showSearch = true
@@ -34,7 +37,7 @@ class FolderDropdownField extends TreeDropdownField
         if ($folder instanceof Folder) {
             $folder = $folder->ID;
         }
-        $request = Injector::inst()->get(HTTPRequest::class);
+        $request = Controller::curr()->getRequest();
         $session = $request->getSession();
         $session->set(get_class() . '.FolderID', $folder);
     }
@@ -46,12 +49,12 @@ class FolderDropdownField extends TreeDropdownField
      */
     public static function get_last_folder()
     {
-        $request = Injector::inst()->get(HTTPRequest::class);
+        $request = Controller::curr()->getRequest();
         $session = $request->getSession();
         return $session->get(get_class() . '.FolderID');
     }
 
-    public function setValue($value)
+    public function setValue($value, $data = NULL)
     {
         if ($value) {
             self::set_last_folder($value);
