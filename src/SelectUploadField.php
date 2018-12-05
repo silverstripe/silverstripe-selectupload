@@ -9,6 +9,7 @@ use SilverStripe\SelectUpload\FolderDropdownField;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\View\Requirements;
 use SilverStripe\Assets\Folder;
+use SilverStripe\Assets\File;
 
 /**
  * A composite form field which allows users to select a folder into which files may be uploaded
@@ -84,9 +85,8 @@ class SelectUploadField extends UploadField
     {
         $field = parent::Field($properties);
         // Extra requirements
-        $base = basename(dirname(__DIR__));
-        Requirements::javascript("{$base}/javascript/SelectUploadField.js");
-        Requirements::css("{$base}/css/SelectUploadField.css");
+        Requirements::javascript("silverstripe/selectupload:/js/SelectUploadField.js");
+        Requirements::css("silverstripe/selectupload:/css/SelectUploadField.css");
         return $field;
     }
 
@@ -182,7 +182,7 @@ class SelectUploadField extends UploadField
         }
     }
 
-    public function handleRequest(HTTPRequest $request, $model)
+    public function handleRequest(HTTPRequest $request)
     {
         $this->updateFolderName($request);
         return parent::handleRequest($request, $model);
@@ -245,5 +245,41 @@ class SelectUploadField extends UploadField
     {
         $name = $this->getFolderName();
         return preg_replace('/\s*\\/\s*/', ' / ', trim($name, '/'));
+    }
+
+    /**
+     * Returns true if the field is neither readonly nor disabled
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return !$this->isDisabled() && !$this->isReadonly();
+    }
+
+    /**
+     * Assign a front-end config variable for the upload field
+     *
+     * @see https://github.com/blueimp/jQuery-File-Upload/wiki/Options for the list of front end options available
+     *
+     * @param string $key
+     * @param mixed $val
+     * @return UploadField self reference
+     */
+    public function setConfig($key, $val) {
+        $this->ufConfig[$key] = $val;
+        return $this;
+    }
+
+    /**
+     * Gets a front-end config variable for the upload field
+     *
+     * @see https://github.com/blueimp/jQuery-File-Upload/wiki/Options for the list of front end options available
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getConfig($key) {
+        if(!isset($this->sufConfig[$key])) return null;
+        return $this->sufConfig[$key];
     }
 }

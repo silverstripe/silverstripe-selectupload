@@ -1,20 +1,20 @@
-Folder:
+SilverStripe\Assets\Folder:
   folder1:
     Name: SelectUploadFieldTest
-    Filename: assets/SelectUploadFieldTest/
+    Filename: 'assets/SelectUploadFieldTest/'
   folder2:
     Name: Subfolder
-    Filename: assets/SelectUploadFieldTest/Subfolder/
-    Parent: =>Folder.folder1
-File:
+    Filename: 'assets/SelectUploadFieldTest/Subfolder/'
+    Parent: =>SilverStripe\Assets\Folder.folder1
+SilverStripe\Assets\File:
   file1:
     Title: File1
-    Filename: assets/SelectUploadFieldTest/file1.txt
-    Parent: =>Folder.folder1
+    Filename: 'assets/SelectUploadFieldTest/file1.txt'
+    Parent: =>SilverStripe\Assets\Folder.folder1
   file2:
     Title: File2
-    Filename: assets/SelectUploadFieldTest/Subfolder/file2.txt
-    Parent: =>Folder.folder2
-SelectUploadFieldTest_Record:
+    Filename: 'assets/SelectUploadFieldTest/Subfolder/file2.txt'
+    Parent: =>SilverStripe\Assets\Folder.folder2
+SilverStripe\SelectUpload\Tests\SelectUploadFieldTestRecord:
   record1:
     Title: Record 1

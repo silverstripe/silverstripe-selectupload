@@ -4,7 +4,7 @@ namespace SilverStripe\SelectUpload;
 
 use SilverStripe\Core\Extension;
 use SilverStripe\SelectUpload\FolderDropdownField;
-use SilverStripe\SelectUpload\SelectUploadField
+use SilverStripe\SelectUpload\SelectUploadField;
 
 class SelectHtmlEditorFieldExtension extends Extension
 {
