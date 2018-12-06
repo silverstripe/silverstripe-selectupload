@@ -4,12 +4,14 @@ namespace SilverStripe\SelectUpload;
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Security\Permission;
 use SilverStripe\SelectUpload\FolderDropdownField;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\View\Requirements;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
+use SilverStripe\AssetAdmin\Controller\AssetAdmin;
 
 /**
  * A composite form field which allows users to select a folder into which files may be uploaded
@@ -20,40 +22,19 @@ use SilverStripe\Assets\File;
 class SelectUploadField extends UploadField
 {
 
-    private static $casting = [
-        'DefaultFolderName' => 'Text',
-        'FolderName'        => 'Text',
-        'DisplayFolderName' => 'Text'
-    ];
-
     private static $url_handlers = [
         'folder/tree/$ID' => 'tree'
     ];
 
+    /**
+     * @config
+     * @var array
+     */
     private static $allowed_actions = [
-        'tree'
+        'upload',
+        'tree',
+        'changeFolder'
     ];
-
-    /**
-     * List of templates for which to disable folder selection.
-     *
-     * @config
-     * @var array
-     */
-    private static $disable_for_templates = [
-        'AssetUploadField' // Disable folder selection if this field is used in the AssetAdmin
-    ];
-
-    /**
-     * Set default permission for selecting folders
-     *
-     * @var array
-     * @config
-     */
-    private static $defaultConfig = [
-        'canSelectFolder' => true
-    ];
-
     /**
      * Folder selector field
      *
@@ -61,16 +42,12 @@ class SelectUploadField extends UploadField
      */
     protected $selectField;
 
+    protected $canSelectFolder = true;
+
     public function __construct($name, $title = null, SS_List $items = null)
     {
         parent::__construct($name, $title, $items);
-
-        $this->addExtraClass('ss-selectupload'); // class, used by js
-        $this->addExtraClass('ss-selectuploadfield'); // class, used by css for selectuploadfield onl
-
-        $this->selectField = FolderDropdownField::create("{$name}/folder")
-            ->addExtraClass('FolderSelector')
-            ->setTitle('Select a folder to upload into');
+        $this->selectField = FolderDropdownField::create("{$name}/folder");
 
         // If we haven't uploaded to a folder yet, set to the default foldername
         if (!$this->selectField->Value()) {
@@ -84,7 +61,9 @@ class SelectUploadField extends UploadField
     public function Field($properties = [])
     {
         $field = parent::Field($properties);
+        $folderLink = $this->Link('changeFolder');
         // Extra requirements
+        Requirements::customScript("const folderURL = '$folderLink'");
         Requirements::javascript("silverstripe/selectupload:/js/SelectUploadField.js");
         Requirements::css("silverstripe/selectupload:/css/SelectUploadField.css");
         return $field;
@@ -111,6 +90,19 @@ class SelectUploadField extends UploadField
         return $this->FolderSelector()->tree($request);
     }
 
+    public function changeFolder(HTTPRequest $request)
+    {
+        // CSRF check
+        $token = $this->getForm()->getSecurityToken();
+        if (!$token->checkRequest($request)) {
+            return $this->httpError(400);
+        }
+        $folderID = $request->postVar('FolderID');
+        if ($folderID) {
+            $this->FolderSelector()->set_last_folder($folderID);
+        }
+    }
+
     public function setForm($form)
     {
         $this->selectField->setForm($form);
@@ -119,7 +111,7 @@ class SelectUploadField extends UploadField
 
     public function Type()
     {
-        return 'selectupload upload';
+        return 'selectupload entwine-uploadfield uploadfield';
     }
 
     /**
@@ -185,7 +177,7 @@ class SelectUploadField extends UploadField
     public function handleRequest(HTTPRequest $request)
     {
         $this->updateFolderName($request);
-        return parent::handleRequest($request, $model);
+        return parent::handleRequest($request);
     }
 
     /**
@@ -198,7 +190,7 @@ class SelectUploadField extends UploadField
      */
     public function setCanSelectFolder($canSelectFolder)
     {
-        return $this->setConfig('canSelectFolder', $canSelectFolder);
+        return $this->canSelectFolder = $canSelectFolder;
     }
 
     /**
@@ -206,7 +198,7 @@ class SelectUploadField extends UploadField
      *
      * @return boolean
      */
-    public function canSelectFolder()
+    public function getCanSelectFolder()
     {
         if (!$this->isActive()) {
             return false;
@@ -215,14 +207,14 @@ class SelectUploadField extends UploadField
             return false;
         }
         // Check config
-        $can = $this->getConfig('canSelectFolder');
+        $can = $this->canSelectFolder;
         return (is_bool($can)) ? $can : Permission::check($can);
     }
 
     public function getFolderName()
     {
         // Ensure that, if this member is allowed, the persistant folder overrides any default set
-        if ($this->canSelectFolder()) {
+        if ($this->getCanSelectFolder()) {
             $path = $this->folderPathFromID($this->selectField->Value());
             if ($path !== false) {
                 return $path;
@@ -252,34 +244,8 @@ class SelectUploadField extends UploadField
      *
      * @return boolean
      */
-    public function isActive() {
+    public function isActive()
+    {
         return !$this->isDisabled() && !$this->isReadonly();
-    }
-
-    /**
-     * Assign a front-end config variable for the upload field
-     *
-     * @see https://github.com/blueimp/jQuery-File-Upload/wiki/Options for the list of front end options available
-     *
-     * @param string $key
-     * @param mixed $val
-     * @return UploadField self reference
-     */
-    public function setConfig($key, $val) {
-        $this->ufConfig[$key] = $val;
-        return $this;
-    }
-
-    /**
-     * Gets a front-end config variable for the upload field
-     *
-     * @see https://github.com/blueimp/jQuery-File-Upload/wiki/Options for the list of front end options available
-     *
-     * @param string $key
-     * @return mixed
-     */
-    public function getConfig($key) {
-        if(!isset($this->sufConfig[$key])) return null;
-        return $this->sufConfig[$key];
     }
 }

@@ -7,13 +7,8 @@
 /** ----------------------------------------------- Typography.  ------------------------------------------------ */
 /** ----------------------------------------------- Grid Units (px)  We have a vertical rhythm that the grid is based off both x (=horizontal) and y (=vertical). All internal padding and margins are scaled to this and accounting for paragraphs ------------------------------------------------ */
 /** ----------------------------------------------- Application Logo (CMS Logo) Must be 24px x 24px ------------------------------------------------ */
-.ss-selectuploadfield .ss-uploadfield-item { overflow: visible; }
-.ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder { color: #0073c1; cursor: pointer; }
-.ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder:hover { text-decoration: underline; }
-.ss-selectuploadfield .ss-uploadfield-item .ss-uploadfield-item-info .select-folder-container { margin: 0 0 10px 0; display: none; }
-
-.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder { color: #0073c1; cursor: pointer; }
-.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder .change { font-weight: normal; }
-.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .step-label .change-folder:hover { text-decoration: underline; }
-.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .select-folder-container { margin: 0 0 10px 20px; display: none; }
-.ss-insert-media .ss-selectassetuploadfield .ss-uploadfield-addfile .select-folder-container .TreeDropdownField { max-width: 624px; }
+.ss-uploadfield-item { overflow: visible; }
+.ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder { color: #0073c1; cursor: pointer; }
+.ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder:hover { text-decoration: underline; }
+.ss-uploadfield-item .ss-uploadfield-item-info .hide { display: none; }
+.ss-uploadfield-item .ss-uploadfield-item-info .select-folder-container { margin: 0 0 10px 0;}
