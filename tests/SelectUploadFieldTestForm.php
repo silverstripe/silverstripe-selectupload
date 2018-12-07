@@ -30,9 +30,8 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
         }
         $fields = new FieldList(
             SelectUploadField::create('FirstFile', File::class)
-                ->setFolderName('SelectUploadFieldTest/FirstDefaultFolder'),
+                ->setFolderName('SelectUploadFieldTest/FirstDefaultFolder/'),
             SelectUploadField::create('SecondFile', File::class)
-                ->setFolderName('SelectUploadFieldTest/SecondDefaultFolder')
         );
         $actions = new FieldList(
             new FormAction('submit')

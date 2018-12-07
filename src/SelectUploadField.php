@@ -117,12 +117,12 @@ class SelectUploadField extends UploadField
     /**
      * Given a request, ensure that the current field is aware of the selected folder
      *
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      */
     protected function updateFolderName($request)
     {
         // check if allowed to select folder
-        if (!$this->canSelectFolder()) {
+        if (!$this->getCanSelectFolder()) {
             return;
         }
 
@@ -190,7 +190,8 @@ class SelectUploadField extends UploadField
      */
     public function setCanSelectFolder($canSelectFolder)
     {
-        return $this->canSelectFolder = $canSelectFolder;
+        $this->canSelectFolder = $canSelectFolder;
+        return $canSelectFolder;
     }
 
     /**

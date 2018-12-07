@@ -13,6 +13,8 @@ class SelectUploadFieldTestController extends Controller implements TestOnly
 
     private static $allowed_actions = ['Form'];
 
+    private static $url_segment = 'blank_page';
+
     public function Form()
     {
         return new SelectUploadFieldTestForm($this, 'Form');
