@@ -42,6 +42,9 @@ class SelectUploadField extends UploadField
      */
     protected $selectField;
 
+    /**
+     * @var bool|string
+     */
     protected $canSelectFolder = true;
 
     public function __construct($name, $title = null, SS_List $items = null)
@@ -58,6 +61,10 @@ class SelectUploadField extends UploadField
         }
     }
 
+    /**
+     * @param array $properties
+     * @return \SilverStripe\ORM\FieldType\DBHTMLText
+     */
     public function Field($properties = [])
     {
         $field = parent::Field($properties);
@@ -90,6 +97,12 @@ class SelectUploadField extends UploadField
         return $this->FolderSelector()->tree($request);
     }
 
+    /**
+     * process HTTP request to change the upload folder
+     *
+     * @param HTTPRequest $request
+     * @throws HTTPResponse_Exception
+     */
     public function changeFolder(HTTPRequest $request)
     {
         // CSRF check
@@ -103,12 +116,19 @@ class SelectUploadField extends UploadField
         }
     }
 
+    /**
+     * @param Form $form
+     * @return UploadField
+     */
     public function setForm($form)
     {
         $this->selectField->setForm($form);
         return parent::setForm($form);
     }
 
+    /**
+     * @return string
+     */
     public function Type()
     {
         return 'selectupload entwine-uploadfield uploadfield';
@@ -174,6 +194,10 @@ class SelectUploadField extends UploadField
         }
     }
 
+    /**
+     * @param HTTPRequest $request
+     * @return array|HTTPResponse|\SilverStripe\Control\RequestHandler|string
+     */
     public function handleRequest(HTTPRequest $request)
     {
         $this->updateFolderName($request);
@@ -191,7 +215,7 @@ class SelectUploadField extends UploadField
     public function setCanSelectFolder($canSelectFolder)
     {
         $this->canSelectFolder = $canSelectFolder;
-        return $canSelectFolder;
+        return $this;
     }
 
     /**
@@ -212,6 +236,9 @@ class SelectUploadField extends UploadField
         return (is_bool($can)) ? $can : Permission::check($can);
     }
 
+    /**
+     * @return string
+     */
     public function getFolderName()
     {
         // Ensure that, if this member is allowed, the persistant folder overrides any default set
@@ -234,6 +261,9 @@ class SelectUploadField extends UploadField
         return parent::getFolderName();
     }
 
+    /**
+     * @return null|string|string[]
+     */
     public function getDisplayFolderName()
     {
         $name = $this->getFolderName();
