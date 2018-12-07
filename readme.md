@@ -9,9 +9,6 @@ This module introduces an extended version of the `UploadField`, called `SelectU
 This allows users to select the folder that they wish to upload newly added files to,
 rather than forcing users to upload to a pre-configured folder.
 
-This module also by default replaces the existing HtmlEditor media upload form with an
-extended version with the same functionality.
-
 The folder selection will be remembered for that user, so that if they are uploading files
 across multiple pages or data-objects they will only need to change this value if they wish to
 change the destination folder.
@@ -48,7 +45,3 @@ Injector:
 This field appears as below:
 
 ![Sample SelectUploadField](docs/en/_images/SelectUpload.png)
-
-In the Media popup of HtmlEditorField the folder can also be selected, as below:
-
-![Sample SelectUploadField](docs/en/_images/MediaForm.png)

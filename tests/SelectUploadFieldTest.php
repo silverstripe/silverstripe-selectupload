@@ -109,20 +109,6 @@ class SelectUploadFieldTest extends FunctionalTest
             }
         }
 
-        /* Create a test files for each of the fixture references */
-        $fileIDs = $this->allFixtureIDs(File::class);
-        foreach ($fileIDs as $fileID) {
-            $file = DataObject::get_by_id(File::class, $fileID);
-            $path = Director::publicFolder();
-            if ($file->ParentID) {
-                $path .= '/' . $file->Parent()->FileName;
-            }
-            $path .= $file->Name;
-            $fh = fopen($path, "w");
-            fwrite($fh, str_repeat('x', 1000000));
-            fclose($fh);
-        }
-
         $controller = Injector::inst()->get(SelectUploadFieldTestController::class);
         $this->form = $controller->Form();
     }
