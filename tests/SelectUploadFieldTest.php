@@ -140,5 +140,4 @@ class SelectUploadFieldTest extends FunctionalTest
             Filesystem::removeFolder(ASSETS_PATH . '/SelectUploadFieldTest');
         }
     }
-
 }

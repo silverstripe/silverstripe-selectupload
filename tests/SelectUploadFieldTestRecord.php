@@ -2,7 +2,6 @@
 
 namespace SilverStripe\SelectUpload\Tests;
 
-
 use SilverStripe\Dev\TestOnly;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\File;

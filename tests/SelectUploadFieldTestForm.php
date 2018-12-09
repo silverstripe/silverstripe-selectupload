@@ -2,7 +2,6 @@
 
 namespace SilverStripe\SelectUpload\Tests;
 
-
 use SilverStripe\Assets\File;
 use SilverStripe\Dev\TestOnly;
 use SilverStripe\Forms\FieldList;
@@ -23,7 +22,7 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
         return $this->record;
     }
 
-    function __construct($controller = null, $name = 'Form')
+    public function __construct($controller = null, $name = 'Form')
     {
         if (empty($controller)) {
             $controller = new SelectUploadFieldTestController();
