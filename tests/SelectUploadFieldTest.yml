@@ -17,4 +17,5 @@ SilverStripe\Assets\File:
     Parent: =>SilverStripe\Assets\Folder.folder2
 SilverStripe\SelectUpload\Tests\SelectUploadFieldTestRecord:
   record1:
-    Title: Record 1
+    ID: 1
+    Title: Record1

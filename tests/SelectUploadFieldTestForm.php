@@ -17,7 +17,7 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
     public function getRecord()
     {
         if (empty($this->record)) {
-            $this->record = DataObject::get_one(SelectUploadFieldTestRecord::class, '"Title" = \'Record 1\'');
+            $this->record = DataObject::get_one(SelectUploadFieldTestRecord::class, '"Title" = \'Record1\'');
         }
         return $this->record;
     }
