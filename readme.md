@@ -38,8 +38,8 @@ In your mysite/_config/config.yml
 ---
 Name: mysettings
 ---
-Injector:
-  UploadField: SelectUploadField
+SilverStripe\Core\Injector:
+  SilverStripe\AssetAdmin\Forms\UploadField: SilverStripe\SelectUpload\SelectUploadField
 ```
 
 This field appears as below:
