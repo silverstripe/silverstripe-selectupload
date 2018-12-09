@@ -2,7 +2,6 @@
 
 namespace SilverStripe\SelectUpload\Tests;
 
-
 use SilverStripe\Control\Controller;
 use SilverStripe\Dev\TestOnly;
 
