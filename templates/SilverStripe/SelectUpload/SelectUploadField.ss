@@ -43,9 +43,7 @@
                     <input id="$id" name="{$Name}[Uploads][]" class="$extraClass ss-uploadfield-fromcomputer-fileinput"
                            data-config="$configString" type="hidden"/>
                 <% end_if %>
-                <div class="clear"><!-- --></div>
             </div>
-            <div class="clear"><!-- --></div>
         </div>
     <% end_if %>
 </div>
