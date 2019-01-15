@@ -117,7 +117,7 @@ class SelectUploadField extends UploadField
      * @param Form $form
      * @return UploadField
      */
-    public function setForm(Form $form)
+    public function setForm($form)
     {
         $this->selectField->setForm($form);
         return parent::setForm($form);
