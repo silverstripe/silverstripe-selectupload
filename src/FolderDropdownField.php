@@ -51,7 +51,7 @@ class FolderDropdownField extends TreeDropdownField
     {
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
-        return $session->get(get_class() . '.FolderID');
+        return $session->get(self::class . '.FolderID');
     }
 
     public function setValue($value, $data = null)

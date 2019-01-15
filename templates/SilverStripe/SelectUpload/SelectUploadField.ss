@@ -6,11 +6,11 @@
                     <% if $CanSelectFolder %>
                         <small><% _t('UploadField.ADDTO', 'Add to') %>
                             <span class="change-folder">
-								<strong class="folder-name">
+                                <strong class="folder-name">
                                     <%t UploadField.FILESPATH 'Files / {path}' path=$DisplayFolderName %>
                                 </strong>
-								<span class="change">(change)</span>
-							</span>
+                                <span class="change">(change)</span>
+                            </span>
                         </small>
                     <% else_if $canPreviewFolder %>
                         <small><% _t('UploadField.ADDTO', 'Add to') %> <strong>$DisplayFolderName</strong></small>
@@ -32,7 +32,7 @@
                         <% if $Items %>
                             <div class="entwine-placeholder">
                                 <% loop $Items %>
-                                    <input type="hidden" name="$Up.Name[Files][]" value="$ID.ATT" />
+                                    <input type="hidden" name="$Up.Name[Files][]" value="$ID.ATT"/>
                                 <% end_loop %>
                             </div>
                         <% end_if %>

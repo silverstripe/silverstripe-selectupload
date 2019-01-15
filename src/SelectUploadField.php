@@ -15,9 +15,6 @@ use SilverStripe\AssetAdmin\Controller\AssetAdmin;
 
 /**
  * A composite form field which allows users to select a folder into which files may be uploaded
- *
- * @package framework
- * @subpackage forms
  */
 class SelectUploadField extends UploadField
 {
@@ -89,10 +86,10 @@ class SelectUploadField extends UploadField
     /**
      * Return the subtree for a selected folder id
      *
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      * @return string HTTP Response
      */
-    public function tree($request)
+    public function tree(HTTPRequest $request)
     {
         return $this->FolderSelector()->tree($request);
     }
@@ -120,7 +117,7 @@ class SelectUploadField extends UploadField
      * @param Form $form
      * @return UploadField
      */
-    public function setForm($form)
+    public function setForm(Form $form)
     {
         $this->selectField->setForm($form);
         return parent::setForm($form);
@@ -139,7 +136,7 @@ class SelectUploadField extends UploadField
      *
      * @param HTTPRequest $request
      */
-    protected function updateFolderName($request)
+    protected function updateFolderName(HTTPRequest $request)
     {
         // check if allowed to select folder
         if (!$this->getCanSelectFolder()) {
@@ -210,7 +207,7 @@ class SelectUploadField extends UploadField
      *
      * @param boolean|string $canSelectFolder Either a boolean flag, or a required
      * permission code
-     * @return self Self reference
+     * @return $this
      */
     public function setCanSelectFolder($canSelectFolder)
     {

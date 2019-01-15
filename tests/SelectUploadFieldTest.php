@@ -24,64 +24,7 @@ class SelectUploadFieldTest extends FunctionalTest
 
     protected $form;
 
-    /**
-     * Test that the SelectUploadField field contains a FolderDropdownField
-     */
-    public function testFolderSelector()
-    {
-        $form = $this->form;
-        $field = $form->fields[0];
-        $this->assertInstanceOf(SelectUploadField::class, $field);
-
-        $folderSelector = $field->FolderSelector();
-        $this->assertInstanceOf(FolderDropdownField::class, $folderSelector);
-    }
-
-    public function testGetFolderNameDefaultFolder()
-    {
-        $form = $this->form;
-        $field = $form->fields[1];
-        $folderPath = $field->getFolderName();
-        $this->assertEquals('Uploads', $folderPath);
-    }
-
-    public function testGetFolderNameDefinedFolder()
-    {
-        $form = $this->form;
-        $field = $form->fields[0];
-        $folderPath = $field->getFolderName();
-        $this->assertEquals('SelectUploadFieldTest/FirstDefaultFolder/', $folderPath);
-    }
-
-    public function testGetFolderNameFromDropdown()
-    {
-        $form = $this->form;
-        $field = $form->fields[1];
-        $folderSelector = $field->FolderSelector();
-        // set value to ID of folder2 from .yml file
-        $folderSelector->setValue(3);
-        $folderPath = $field->getFolderName();
-
-        $this->assertEquals('SelectUploadFieldTest/Subfolder/', $folderPath);
-    }
-
-    public function testGetCanSelectFolder()
-    {
-        $form = $this->form;
-        $field = $form->fields[1];
-        $this->assertTrue($field->getCanSelectFolder());
-    }
-
-    public function testSetCanSelectFolder()
-    {
-        $form = $this->form;
-        $field = $form->fields[1];
-        $this->assertTrue($field->getCanSelectFolder());
-        $field->setCanSelectFolder(false);
-        $this->assertFalse($field->getCanSelectFolder());
-    }
-
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -113,7 +56,7 @@ class SelectUploadFieldTest extends FunctionalTest
         $this->form = $controller->Form();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
 
@@ -140,4 +83,63 @@ class SelectUploadFieldTest extends FunctionalTest
             Filesystem::removeFolder(ASSETS_PATH . '/SelectUploadFieldTest');
         }
     }
+
+    /**
+     * Test that the SelectUploadField field contains a FolderDropdownField
+     */
+    public function testFolderSelector()
+    {
+        $form = $this->form;
+        $field = $form->fields[0];
+        $this->assertInstanceOf(SelectUploadField::class, $field);
+
+        $folderSelector = $field->FolderSelector();
+        $this->assertInstanceOf(FolderDropdownField::class, $folderSelector);
+    }
+
+    public function testGetFolderNameDefaultFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $folderPath = $field->getFolderName();
+        $this->assertSame('Uploads', $folderPath);
+    }
+
+    public function testGetFolderNameDefinedFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[0];
+        $folderPath = $field->getFolderName();
+        $this->assertSame('SelectUploadFieldTest/FirstDefaultFolder/', $folderPath);
+    }
+
+    public function testGetFolderNameFromDropdown()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $folderSelector = $field->FolderSelector();
+        // set value to ID of folder2 from .yml file
+        $folderSelector->setValue(3);
+        $folderPath = $field->getFolderName();
+
+        $this->assertSame('SelectUploadFieldTest/Subfolder/', $folderPath);
+    }
+
+    public function testGetCanSelectFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $this->assertTrue($field->getCanSelectFolder());
+    }
+
+    public function testSetCanSelectFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $this->assertTrue($field->getCanSelectFolder());
+        $field->setCanSelectFolder(false);
+        $this->assertFalse($field->getCanSelectFolder());
+    }
+
+
 }

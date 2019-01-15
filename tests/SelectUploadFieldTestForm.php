@@ -14,14 +14,6 @@ use SilverStripe\SelectUpload\SelectUploadField;
 class SelectUploadFieldTestForm extends Form implements TestOnly
 {
 
-    public function getRecord()
-    {
-        if (empty($this->record)) {
-            $this->record = DataObject::get_one(SelectUploadFieldTestRecord::class, '"Title" = \'Record1\'');
-        }
-        return $this->record;
-    }
-
     public function __construct($controller = null, $name = 'Form')
     {
         if (empty($controller)) {
@@ -40,6 +32,14 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
         parent::__construct($controller, $name, $fields, $actions, $validator);
 
         $this->loadDataFrom($this->getRecord());
+    }
+
+    public function getRecord()
+    {
+        if (empty($this->record)) {
+            $this->record = DataObject::get_one(SelectUploadFieldTestRecord::class, '"Title" = \'Record1\'');
+        }
+        return $this->record;
     }
 
     public function submit($data, Form $form)
