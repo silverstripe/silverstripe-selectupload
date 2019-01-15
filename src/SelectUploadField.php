@@ -262,7 +262,7 @@ class SelectUploadField extends UploadField
      * Improve readability of folder name and directory structure.
      * add a space before and after each /
      * 'foo/bar' will be displayed as 'foo / bar'
-     * 
+     *
      * @return null|string|string[]
      */
     public function getDisplayFolderName()

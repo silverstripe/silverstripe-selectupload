@@ -36,7 +36,8 @@ class SelectUploadFieldTest extends FunctionalTest
         $request->setSession($session);
 
         // Clear saved folder
-        FolderDropdownField::set_last_folder(0);
+        $folder = FolderDropdownField::create("test/folder");
+        $folder->set_last_folder(0);
 
         if (!file_exists(ASSETS_PATH)) {
             mkdir(ASSETS_PATH);

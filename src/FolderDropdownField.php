@@ -24,7 +24,7 @@ class FolderDropdownField extends TreeDropdownField
         $showSearch = true
     ) {
         parent::__construct($name, $title, $sourceObject, $keyField, $labelField, $showSearch);
-        $this->setValue(self::get_last_folder());
+        $this->setValue($this->get_last_folder());
     }
 
     /**
@@ -32,14 +32,14 @@ class FolderDropdownField extends TreeDropdownField
      *
      * @param int|Folder $folder Folder instance or ID
      */
-    public static function set_last_folder($folder)
+    public function set_last_folder($folder)
     {
         if ($folder instanceof Folder) {
             $folder = $folder->ID;
         }
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
-        $session->set(self::class . '.FolderID', $folder);
+        $session->set(get_class() . '.FolderID', $folder);
     }
 
     /**
@@ -47,7 +47,7 @@ class FolderDropdownField extends TreeDropdownField
      *
      * @return int
      */
-    public static function get_last_folder()
+    public function get_last_folder()
     {
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
@@ -57,7 +57,7 @@ class FolderDropdownField extends TreeDropdownField
     public function setValue($value, $data = null)
     {
         if ($value) {
-            self::set_last_folder($value);
+            $this->set_last_folder($value);
         }
         parent::setValue($value);
     }
