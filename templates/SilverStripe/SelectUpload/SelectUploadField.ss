@@ -4,20 +4,20 @@
             <div class="ss-uploadfield-item-info">
                 <label class="ss-uploadfield-item-name">
                     <% if $CanSelectFolder %>
-                        <small><%t SilverStripe\\SelectUploadField.ADDTO 'Add to' %>
+                        <small><%t SilverStripe\\SelectUpload\\SelectUploadField.ADDTO 'Add to' %>
                             <span class="change-folder">
                                 <strong class="folder-name">
-                                    <%t SilverStripe\\SelectUploadField.FILESPATH 'Files / {path}' path=$DisplayFolderName %>
+                                    <%t SilverStripe\\SelectUpload\\SelectUploadField.FILESPATH 'Files / {path}' path=$DisplayFolderName %>
                                 </strong>
                                 <span class="change">(change)</span>
                             </span>
                         </small>
                     <% else_if $canPreviewFolder %>
-                        <small><%t SilverStripe\\SelectUploadField.ADDTO 'Add to' %> <strong>$DisplayFolderName</strong></small>
+                        <small><%t SilverStripe\\SelectUpload\\SelectUploadField.ADDTO 'Add to' %> <strong>$DisplayFolderName</strong></small>
                     <% else_if $multiple %>
-                        <small><%t SilverStripe\\SelectUploadField.ATTACHFILES 'Attach files' %></small>
+                        <small><%t SilverStripe\\SelectUpload\\SelectUploadField.ATTACHFILES 'Attach files' %></small>
                     <% else %>
-                        <small><%t SilverStripe\\SelectUploadField.ATTACHFILE 'Attach a file' %></small>
+                        <small><%t SilverStripe\\SelectUpload\\SelectUploadField.ATTACHFILE 'Attach a file' %></small>
                     <% end_if %>
                 </label>
                 <% if $CanSelectFolder %>
