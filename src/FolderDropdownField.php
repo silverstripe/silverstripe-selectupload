@@ -39,7 +39,7 @@ class FolderDropdownField extends TreeDropdownField
         }
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
-        $session->set(get_class() . '.FolderID', $folder);
+        $session->set(self::class . '.FolderID', $folder);
     }
 
     /**

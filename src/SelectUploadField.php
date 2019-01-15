@@ -6,12 +6,12 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Security\Permission;
-use SilverStripe\SelectUpload\FolderDropdownField;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\View\Requirements;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
 use SilverStripe\AssetAdmin\Controller\AssetAdmin;
+use SilverStripe\Forms\Form;
 
 /**
  * A composite form field which allows users to select a folder into which files may be uploaded

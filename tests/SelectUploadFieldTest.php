@@ -140,6 +140,4 @@ class SelectUploadFieldTest extends FunctionalTest
         $field->setCanSelectFolder(false);
         $this->assertFalse($field->getCanSelectFolder());
     }
-
-
 }
