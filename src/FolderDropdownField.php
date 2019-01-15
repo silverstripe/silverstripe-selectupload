@@ -32,7 +32,7 @@ class FolderDropdownField extends TreeDropdownField
      *
      * @param int $folderID Folder ID
      */
-    public function setLastFolderID(int $folderID)
+    public function setLastFolderID($folderID)
     {
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
