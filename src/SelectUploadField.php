@@ -109,7 +109,7 @@ class SelectUploadField extends UploadField
         }
         $folderID = $request->postVar('FolderID');
         if ($folderID) {
-            $this->FolderSelector()->set_last_folder($folderID);
+            $this->FolderSelector()->setLastFolderID($folderID);
         }
     }
 
