@@ -1,265 +1,144 @@
 <?php
 
-class SelectUploadFieldTest extends FunctionalTest {
+namespace SilverStripe\SelectUpload\Tests;
 
-	protected static $fixture_file = 'SelectUploadFieldTest.yml';
+use SilverStripe\Assets\File;
+use SilverStripe\Assets\Folder;
+use SilverStripe\Assets\Filesystem;
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Session;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Dev\FunctionalTest;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\SelectUpload\FolderDropdownField;
+use SilverStripe\SelectUpload\SelectUploadField;
 
-	protected $extraDataObjects = array('SelectUploadFieldTest_Record');
+class SelectUploadFieldTest extends FunctionalTest
+{
 
-	/**
-	 * Test that an object can be uploaded against an object with a has_one relation
-	 */
-	public function testUploadRelation() {
-		$this->loginWithPermission('ADMIN');
+    protected static $fixture_file = 'SelectUploadFieldTest.yml';
 
-		// Unset existing has_one relation before re-uploading
-		$folder1 = $this->objFromFixture('Folder', 'folder1');
-		$record = $this->objFromFixture('SelectUploadFieldTest_Record', 'record1');
-		$record->FirstFileID = null;
-		$record->SecondFileID = null;
-		$record->write();
+    protected static $extra_dataobjects = [SelectUploadFieldTestRecord::class];
 
-		// Firstly, ensure the file can be uploaded to the default folder
-		$tmpFileName = 'testSelectUploadFile1.txt';
-		$response = $this->mockFileUpload('FirstFile', $tmpFileName);
-		$this->assertFalse($response->isError());
-		$this->assertFileExists(ASSETS_PATH . "/SelectUploadFieldTest/FirstDefaultFolder/$tmpFileName");
-		$uploadedFile = File::get()->filter('Name', $tmpFileName)->first();
-		$this->assertTrue($uploadedFile instanceof File && $uploadedFile->exists(), 'The file object is created');
+    protected $form;
 
-		// If another folder is selected then a different folder should be used
-		$tmpFileName = 'testSelectUploadFile2.txt';
-		$response = $this->mockFileUpload('FirstFile', $tmpFileName, $folder1->ID);
-		$this->assertFalse($response->isError());
-		$this->assertFileExists(ASSETS_PATH . "/SelectUploadFieldTest/$tmpFileName");
-		$uploadedFile = File::get()->filter('Name', $tmpFileName)->first();
-		$this->assertTrue($uploadedFile instanceof File && $uploadedFile->exists(), 'The file object is created');
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder1->ID);
+    protected function setUp()
+    {
+        parent::setUp();
 
-		// Repeating an upload without presenting a folder should use the last used folder
-		$tmpFileName = 'testSelectUploadFile3.txt';
-		$response = $this->mockFileUpload('SecondFile', $tmpFileName);
-		$this->assertFalse($response->isError());
-		$this->assertFileExists(ASSETS_PATH . "/SelectUploadFieldTest/$tmpFileName");
-		$uploadedFile = File::get()->filter('Name', $tmpFileName)->first();
-		$this->assertTrue($uploadedFile instanceof File && $uploadedFile->exists(), 'The file object is created');
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder1->ID);
-	}
+        $request = Controller::curr()->getRequest();
 
-	/**
-	 * Tests that files that don't exist correctly return false
-	 */
-	public function testFilesDontExist() {
-		$this->loginWithPermission('ADMIN');
-		$folder1 = $this->objFromFixture('Folder', 'folder1');
-		$folder2 = $this->objFromFixture('Folder', 'folder1');
-		$nonFile = uniqid().'.txt';
+        $session = new Session(['key' => 'value']);
+        $session->init($request);
 
-		// Check that sub-folder non-file isn't found
-		$responseRoot = $this->mockFileExists('FirstFile', $nonFile, $folder1->ID);
-		$responseRootData = json_decode($responseRoot->getBody());
-		$this->assertFalse($responseRoot->isError());
-		$this->assertFalse($responseRootData->exists);
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder1->ID);
+        $request->setSession($session);
 
-		// Check that second level sub-folder non-file isn't found
-		$responseRoot = $this->mockFileExists('FirstFile', $nonFile, $folder2->ID);
-		$responseRootData = json_decode($responseRoot->getBody());
-		$this->assertFalse($responseRoot->isError());
-		$this->assertFalse($responseRootData->exists);
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder2->ID);
-	}
+        // Clear saved folder
+        $folder = FolderDropdownField::create("test/folder");
+        $folder->setLastFolderID(0);
 
+        if (!file_exists(ASSETS_PATH)) {
+            mkdir(ASSETS_PATH);
+        }
 
-	/**
-	 * Tests that files that do exist correctly return true
-	 */
-	public function testFilesDoExist() {
-		$this->loginWithPermission('ADMIN');
-		$folder1 = $this->objFromFixture('Folder', 'folder1');
-		$folder2 = $this->objFromFixture('Folder', 'folder2');
+        /* Create a test folders for each of the fixture references */
+        $folderIDs = $this->allFixtureIDs(Folder::class);
+        foreach ($folderIDs as $folderID) {
+            $folder = DataObject::get_by_id(Folder::class, $folderID);
+            $path = Director::publicFolder() . '/' . $folder->Filename;
+            if (!file_exists($path)) {
+                mkdir($path);
+            }
+        }
 
-		// Check that sub-folder non-file isn't found
-		$responseRoot = $this->mockFileExists('FirstFile', 'file1.txt', $folder1->ID);
-		$responseRootData = json_decode($responseRoot->getBody());
-		$this->assertFalse($responseRoot->isError());
-		$this->assertTrue($responseRootData->exists);
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder1->ID);
+        $controller = Injector::inst()->get(SelectUploadFieldTestController::class);
+        $this->form = $controller->Form();
+    }
 
-		// Check that second level sub-folder non-file isn't found
-		$responseRoot = $this->mockFileExists('FirstFile', 'file2.txt', $folder2->ID);
-		$responseRootData = json_decode($responseRoot->getBody());
-		$this->assertFalse($responseRoot->isError());
-		$this->assertTrue($responseRootData->exists);
-		$this->assertEquals(FolderDropdownField::get_last_folder(), $folder2->ID);
-	}
+    protected function tearDown()
+    {
+        parent::tearDown();
 
-	/**
-	 * @return Array Emulating an entry in the $_FILES superglobal
-	 */
-	protected function getUploadFile($tmpFileName = 'SelectUploadFieldTest-testUpload.txt') {
-		$tmpFilePath = TEMP_FOLDER . '/' . $tmpFileName;
-		$tmpFileContent = '';
-		for($i=0; $i<10000; $i++) $tmpFileContent .= '0';
-		file_put_contents($tmpFilePath, $tmpFileContent);
+        /* Remove the test files that we've created */
+        $fileIDs = $this->allFixtureIDs(File::class);
+        foreach ($fileIDs as $fileID) {
+            $file = DataObject::get_by_id(File::class, $fileID);
+            if ($file && file_exists(ASSETS_PATH . "/$file->Name")) {
+                unlink(ASSETS_PATH . "/$file->Name");
+            }
+        }
 
-		// emulates the $_FILES array
-		return array(
-			'name' => array('Uploads' => array($tmpFileName)),
-			'type' => array('Uploads' => array('text/plaintext')),
-			'size' => array('Uploads' => array(filesize($tmpFilePath))),
-			'tmp_name' => array('Uploads' => array($tmpFilePath)),
-			'error' => array('Uploads' => array(UPLOAD_ERR_OK)),
-		);
-	}
+        /* Remove the test folders that we've crated */
+        $folderIDs = $this->allFixtureIDs(Folder::class);
+        foreach ($folderIDs as $folderID) {
+            $folder = DataObject::get_by_id(Folder::class, $folderID);
+            if ($folder && file_exists(ASSETS_PATH . "/$folder->Name")) {
+                Filesystem::removeFolder(ASSETS_PATH . "/$folder->Name");
+            }
+        }
 
+        // Remove left over folders and any files that may exist
+        if (file_exists(ASSETS_PATH . '/SelectUploadFieldTest')) {
+            Filesystem::removeFolder(ASSETS_PATH . '/SelectUploadFieldTest');
+        }
+    }
 
-	/**
-	 * Simulates a file upload
-	 *
-	 * @param string $fileField Name of the field to mock upload for
-	 * @param array $tmpFileName Name of temporary file to upload
-	 * @param integer $folderID ID of the folder to check in
-	 * @return SS_HTTPResponse form response
-	 */
-	protected function mockFileUpload($fileField, $tmpFileName, $folderID = 0) {
-		$upload = $this->getUploadFile($tmpFileName);
-		$_FILES = array($fileField => $upload);
-		return $this->post(
-			"SelectUploadFieldTest_Controller/Form/field/{$fileField}/upload",
-			array(
-				$fileField => $upload,
-				"{$fileField}/folder" => $folderID
-			)
-		);
-	}
+    /**
+     * Test that the SelectUploadField field contains a FolderDropdownField
+     */
+    public function testFolderSelector()
+    {
+        $form = $this->form;
+        $field = $form->fields[0];
+        $this->assertInstanceOf(SelectUploadField::class, $field);
 
-	/**
-	 * Simulate a check for file exists
-	 *
-	 * @param string $fileField Name of the field
-	 * @param string $fileName Name of the file to check
-	 * @param integer $folderID ID of the folder to check in
-	 * @return SS_HTTPResponse form response
-	 * @return type
-	 */
-	protected function mockFileExists($fileField, $fileName, $folderID = 0) {
-		$request = "SelectUploadFieldTest_Controller/Form/field/{$fileField}/fileexists"
-			. "?filename=" . urlencode($fileName)
-			. "&" . urlencode("{$fileField}/folder") . "={$folderID}";
-		return $this->get($request);
-	}
+        $folderSelector = $field->FolderSelector();
+        $this->assertInstanceOf(FolderDropdownField::class, $folderSelector);
+    }
 
-	public function setUp() {
-		parent::setUp();
+    public function testGetFolderNameDefaultFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $folderPath = $field->getFolderName();
+        $this->assertSame('Uploads', $folderPath);
+    }
 
-		// Clear saved folder
-		FolderDropdownField::set_last_folder(0);
+    public function testGetFolderNameDefinedFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[0];
+        $folderPath = $field->getFolderName();
+        $this->assertSame('SelectUploadFieldTest/FirstDefaultFolder/', $folderPath);
+    }
 
-		if(!file_exists(ASSETS_PATH)) mkdir(ASSETS_PATH);
+    public function testGetFolderNameFromDropdown()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $folderSelector = $field->FolderSelector();
+        // set value to ID of folder2 from .yml file
+        $folderSelector->setValue(3);
+        $folderPath = $field->getFolderName();
 
-		/* Create a test folders for each of the fixture references */
-		$folderIDs = $this->allFixtureIDs('Folder');
-		foreach($folderIDs as $folderID) {
-			$folder = DataObject::get_by_id('Folder', $folderID);
-			if(!file_exists(BASE_PATH."/$folder->Filename")) mkdir(BASE_PATH."/$folder->Filename");
-		}
+        $this->assertSame('SelectUploadFieldTest/Subfolder/', $folderPath);
+    }
 
-		/* Create a test files for each of the fixture references */
-		$fileIDs = $this->allFixtureIDs('File');
-		foreach($fileIDs as $fileID) {
-			$file = DataObject::get_by_id('File', $fileID);
-			$fh = fopen(BASE_PATH."/$file->Filename", "w");
-			fwrite($fh, str_repeat('x',1000000));
-			fclose($fh);
-		}
-	}
+    public function testGetCanSelectFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $this->assertTrue($field->getCanSelectFolder());
+    }
 
-	public function tearDown() {
-		parent::tearDown();
-
-		/* Remove the test files that we've created */
-		$fileIDs = $this->allFixtureIDs('File');
-		foreach($fileIDs as $fileID) {
-			$file = DataObject::get_by_id('File', $fileID);
-			if($file && file_exists(BASE_PATH."/$file->Filename")) unlink(BASE_PATH."/$file->Filename");
-		}
-
-		/* Remove the test folders that we've crated */
-		$folderIDs = $this->allFixtureIDs('Folder');
-		foreach($folderIDs as $folderID) {
-			$folder = DataObject::get_by_id('Folder', $folderID);
-			if($folder && file_exists(BASE_PATH."/$folder->Filename")) {
-				Filesystem::removeFolder(BASE_PATH."/$folder->Filename");
-			}
-		}
-
-		// Remove left over folders and any files that may exist
-		if(file_exists(ASSETS_PATH.'/SelectUploadFieldTest')) {
-			Filesystem::removeFolder(ASSETS_PATH.'/SelectUploadFieldTest');
-		}
-	}
-
-}
-
-class SelectUploadFieldTest_Record extends DataObject implements TestOnly {
-
-	private static $db = array(
-		'Title' => 'Text',
-	);
-
-	private static $has_one = array(
-		'FirstFile' => 'File',
-		'SecondFile' => 'File'
-	);
-}
-
-
-class SelectUploadFieldTestForm extends Form implements TestOnly {
-
-	public function getRecord() {
-		if(empty($this->record)) {
-			$this->record = DataObject::get_one('SelectUploadFieldTest_Record', '"Title" = \'Record 1\'');
-		}
-		return $this->record;
-	}
-
-	function __construct($controller = null, $name = 'Form') {
-		if(empty($controller)) {
-			$controller = new UploadFieldTest_Controller();
-		}
-		$fields = new FieldList(
-			SelectUploadField::create('FirstFile', 'File')
-				->setFolderName('SelectUploadFieldTest/FirstDefaultFolder'),
-			SelectUploadField::create('SecondFile', 'File')
-				->setFolderName('SelectUploadFieldTest/SecondDefaultFolder')
-		);
-		$actions = new FieldList(
-			new FormAction('submit')
-		);
-		$validator = new RequiredFields();
-
-		parent::__construct($controller, $name, $fields, $actions, $validator);
-
-		$this->loadDataFrom($this->getRecord());
-	}
-
-	public function submit($data, Form $form) {
-		$record = $this->getRecord();
-		$form->saveInto($record);
-		$record->write();
-		return json_encode($record->toMap());
-	}
-}
-
-
-class SelectUploadFieldTest_Controller extends Controller implements TestOnly {
-
-	protected $template = 'BlankPage';
-
-	private static $allowed_actions = array('Form');
-
-	public function Form() {
-		return new SelectUploadFieldTestForm($this, 'Form');
-	}
+    public function testSetCanSelectFolder()
+    {
+        $form = $this->form;
+        $field = $form->fields[1];
+        $this->assertTrue($field->getCanSelectFolder());
+        $field->setCanSelectFolder(false);
+        $this->assertFalse($field->getCanSelectFolder());
+    }
 }
