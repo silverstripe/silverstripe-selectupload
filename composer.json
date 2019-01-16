@@ -26,9 +26,6 @@
         "issues": "https://github.com/silverstripe-labs/silverstripe-selectupload/issues"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
-        },
         "expose": [
             "css",
             "js"
