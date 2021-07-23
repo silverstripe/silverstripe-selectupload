@@ -64,12 +64,13 @@ class SelectUploadField extends UploadField
      */
     public function Field($properties = [])
     {
+        $this->setAttribute('data-folder-link', $this->Link('changeFolder'));
+
         $field = parent::Field($properties);
-        $folderLink = $this->Link('changeFolder');
-        // Extra requirements
-        Requirements::customScript("const folderURL = '$folderLink'");
+
         Requirements::javascript("silverstripe/selectupload:/js/SelectUploadField.js");
         Requirements::css("silverstripe/selectupload:/css/SelectUploadField.css");
+
         return $field;
     }
 
