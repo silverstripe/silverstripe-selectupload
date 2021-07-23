@@ -6,3 +6,10 @@ import:
 env:
   global:
     - COMPOSER_ROOT_VERSION="4.8.x-dev"
+
+jobs:
+  include:
+    - php: 7.4
+      env:
+        - DB=MYSQL
+        - PHPUNIT_TEST=1
