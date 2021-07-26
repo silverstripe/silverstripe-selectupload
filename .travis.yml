@@ -1,15 +1,8 @@
 version: ~> 1.0
 
 import:
-  - silverstripe/silverstripe-travis-shared:config/provision/standard.yml
+  - silverstripe/silverstripe-travis-shared:config/provision/standard-jobs-range.yml
 
 env:
   global:
     - COMPOSER_ROOT_VERSION="4.8.x-dev"
-
-jobs:
-  include:
-    - php: 7.4
-      env:
-        - DB=MYSQL
-        - PHPUNIT_TEST=1
