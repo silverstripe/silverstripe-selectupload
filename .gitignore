@@ -1,1 +1,4 @@
 /.sass-cache/
+composer.lock
+/resources/
+/vendor/
