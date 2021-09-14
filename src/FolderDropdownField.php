@@ -3,18 +3,15 @@
 namespace SilverStripe\SelectUpload;
 
 use SilverStripe\Control\Controller;
-use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\Assets\Folder;
-use SilverStripe\Control\Session;
 
 /**
- * Represents a TreeDropdownField for folders which remembers the last folder selected
+ * Represents a TreeDropdownField for folders which remembers the last folder
+ * selected.
  */
 class FolderDropdownField extends TreeDropdownField
 {
-
     public function __construct(
         $name,
         $title = null,
@@ -24,6 +21,7 @@ class FolderDropdownField extends TreeDropdownField
         $showSearch = true
     ) {
         parent::__construct($name, $title, $sourceObject, $keyField, $labelField, $showSearch);
+
         $this->setValue($this->getLastFolderID());
     }
 
@@ -36,7 +34,9 @@ class FolderDropdownField extends TreeDropdownField
     {
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
-        $session->set(get_class() . '.FolderID', $folderID);
+        $session->set($this->getSessionKey(), $folderID);
+
+        return $this;
     }
 
     /**
@@ -48,7 +48,8 @@ class FolderDropdownField extends TreeDropdownField
     {
         $request = Controller::curr()->getRequest();
         $session = $request->getSession();
-        return $session->get(self::class . '.FolderID');
+
+        return $session->get($this->getSessionKey());
     }
 
     public function setValue($value, $data = null)
@@ -57,5 +58,13 @@ class FolderDropdownField extends TreeDropdownField
             $this->setLastFolderID($value);
         }
         parent::setValue($value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionKey()
+    {
+        return self::class .'.'. $this->name . '.FolderID';
     }
 }
