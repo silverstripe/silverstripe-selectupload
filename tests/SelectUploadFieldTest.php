@@ -24,7 +24,7 @@ class SelectUploadFieldTest extends FunctionalTest
 
     protected $form;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -57,7 +57,7 @@ class SelectUploadFieldTest extends FunctionalTest
         $this->form = $controller->Form();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
