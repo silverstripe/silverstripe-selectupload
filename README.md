@@ -1,6 +1,6 @@
 # Select Upload Field
 
-[![Build Status](https://api.travis-ci.com/silverstripe/silverstripe-selectupload.svg?branch=2)](https://travis-ci.com/silverstripe/silverstripe-selectupload)
+[![CI](https://github.com/silverstripe/silverstripe-selectupload/actions/workflows/ci.yml/badge.svg)](https://github.com/silverstripe/silverstripe-selectupload/actions/workflows/ci.yml)
 [![SilverStripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 
 ## Introduction
@@ -39,7 +39,7 @@ In your mysite/_config/config.yml
 Name: mysettings
 ---
 SilverStripe\Core\Injector\Injector:
-  SilverStripe\AssetAdmin\Forms\UploadField: 
+  SilverStripe\AssetAdmin\Forms\UploadField:
     class: SilverStripe\SelectUpload\SelectUploadField
 ```
 
