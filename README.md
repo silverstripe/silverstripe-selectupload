@@ -1,7 +1,5 @@
 # Select Upload Field
 
-[![Build Status](https://travis-ci.org/silverstripe/silverstripe-selectupload.svg?branch=master)](https://travis-ci.org/silverstripe/silverstripe-selectupload)
-
 ## Introduction
 
 This module introduces an extended version of the `UploadField`, called `SelectUploadField`.
