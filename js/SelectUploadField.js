@@ -1,27 +1,29 @@
-const uploadFields = document.querySelectorAll(".selectupload div.folderdropdown input[type=hidden]");
-const changeFolderLink = document.querySelector(".ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder");
-const handleUploadFieldChange = (event) => {
-  let folderID = event.target.value;
-  if (folderID !== '') {
-    const securityID = document.getElementById("Form_EditForm_SecurityID").value;
+jQuery.entwine("selectupload", function ($) {
 
-    formData = new FormData();
-    formData.append('FolderID', folderID);
-    formData.append('SecurityID', securityID);
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", folderURL);
-    xmlhttp.send(formData);
-  }
-};
+  $(".field.selectupload div.folderdropdown input[type=hidden]").entwine({
+    onchange: function () {
+      let folderID = $(this).val();
+      if (folderID !== '') {
+        const securityID = document.getElementById("Form_EditForm_SecurityID")
+          ? document.getElementById("Form_EditForm_SecurityID").value
+          : document.getElementById("Form_ItemEditForm_SecurityID").value;
 
-const handleDisplayFolderSelect = () => {
-  const folderSelectWrapper = document.querySelector(".ss-uploadfield-item .select-folder-container");
-  folderSelectWrapper.classList.remove("hide");
-  document.querySelector(".ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name small").innerHTML =
-    "Select upload folder:";
-}
+        let formData = new FormData();
+        formData.append('FolderID', folderID);
+        formData.append('SecurityID', securityID);
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", folderURL);
+        xmlhttp.send(formData);
+      }
+    }
+  });
 
-changeFolderLink.addEventListener('click', handleDisplayFolderSelect);
-uploadFields.forEach(function (field) {
-  document.getElementById(field.id).onchange = handleUploadFieldChange;
+  $(".field.selectupload .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .change-folder").entwine({
+    onclick: function () {
+      const folderSelectWrapper = $(this).parents('.ss-uploadfield-item-info').find(".select-folder-container");
+      folderSelectWrapper.removeClass("hide");
+      $(this).parents('.ss-uploadfield-item-info').find(".ss-uploadfield-item-name small").html("Select upload folder:");
+    }
+  });
+
 });
