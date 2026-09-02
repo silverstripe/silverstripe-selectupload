@@ -1,0 +1,16 @@
+# Composer
+/vendor/
+composer.lock
+
+# SilverStripe runtime, created by running the tests locally
+/public/
+/assets/
+/resources/
+/silverstripe-cache/
+
+# PHPUnit
+/.phpunit.cache/
+.phpunit.result.cache
+
+# OS
+.DS_Store
