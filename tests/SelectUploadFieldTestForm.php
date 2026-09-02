@@ -7,7 +7,7 @@ use SilverStripe\Dev\TestOnly;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormAction;
-use SilverStripe\Forms\RequiredFields;
+use SilverStripe\Forms\Validation\RequiredFieldsValidator;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\SelectUpload\SelectUploadField;
 
@@ -27,7 +27,7 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
         $actions = new FieldList(
             new FormAction('submit')
         );
-        $validator = new RequiredFields();
+        $validator = new RequiredFieldsValidator();
 
         parent::__construct($controller, $name, $fields, $actions, $validator);
 
@@ -37,7 +37,9 @@ class SelectUploadFieldTestForm extends Form implements TestOnly
     public function getRecord()
     {
         if (empty($this->record)) {
-            $this->record = DataObject::get_one(SelectUploadFieldTestRecord::class, '"Title" = \'Record1\'');
+            $this->record = DataObject::get(SelectUploadFieldTestRecord::class)
+                ->filter(['Title' => 'Record1'])
+                ->first();
         }
         return $this->record;
     }

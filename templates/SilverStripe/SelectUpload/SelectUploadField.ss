@@ -21,7 +21,7 @@
                     <% end_if %>
                 </label>
                 <% if $CanSelectFolder %>
-                    <% with FolderSelector %>
+                    <% with $FolderSelector %>
                         <div class="select-folder-container hide">
                             $Field
                         </div>
@@ -37,7 +37,7 @@
                             </div>
                         <% end_if %>
                     </div>
-                    <input $AttributesHTML <% include SilverStripe/Forms/AriaAttributes %> />
+                    <input $AttributesHTML $SchemaAttributesHtml <% include SilverStripe/Forms/AriaAttributes %> />
 
                 <% else %>
                     <input id="$id" name="{$Name}[Uploads][]" class="$extraClass ss-uploadfield-fromcomputer-fileinput"

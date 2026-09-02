@@ -46,7 +46,7 @@ class SelectUploadFieldTest extends FunctionalTest
         /* Create a test folders for each of the fixture references */
         $folderIDs = $this->allFixtureIDs(Folder::class);
         foreach ($folderIDs as $folderID) {
-            $folder = DataObject::get_by_id(Folder::class, $folderID);
+            $folder = DataObject::get(Folder::class)->byID($folderID);
             $path = Director::publicFolder() . '/' . $folder->Filename;
             if (!file_exists($path)) {
                 mkdir($path);
@@ -64,7 +64,7 @@ class SelectUploadFieldTest extends FunctionalTest
         /* Remove the test files that we've created */
         $fileIDs = $this->allFixtureIDs(File::class);
         foreach ($fileIDs as $fileID) {
-            $file = DataObject::get_by_id(File::class, $fileID);
+            $file = DataObject::get(File::class)->byID($fileID);
             if ($file && file_exists(ASSETS_PATH . "/$file->Name")) {
                 unlink(ASSETS_PATH . "/$file->Name");
             }
@@ -73,7 +73,7 @@ class SelectUploadFieldTest extends FunctionalTest
         /* Remove the test folders that we've crated */
         $folderIDs = $this->allFixtureIDs(Folder::class);
         foreach ($folderIDs as $folderID) {
-            $folder = DataObject::get_by_id(Folder::class, $folderID);
+            $folder = DataObject::get(Folder::class)->byID($folderID);
             if ($folder && file_exists(ASSETS_PATH . "/$folder->Name")) {
                 Filesystem::removeFolder(ASSETS_PATH . "/$folder->Name");
             }

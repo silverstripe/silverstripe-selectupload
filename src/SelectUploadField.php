@@ -6,7 +6,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Security\Permission;
-use SilverStripe\ORM\SS_List;
+use SilverStripe\Model\List\SS_List;
 use SilverStripe\View\Requirements;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\File;
@@ -44,13 +44,13 @@ class SelectUploadField extends UploadField
      */
     protected $canSelectFolder = true;
 
-    public function __construct($name, $title = null, SS_List $items = null)
+    public function __construct($name, $title = null, ?SS_List $items = null)
     {
         parent::__construct($name, $title, $items);
         $this->selectField = FolderDropdownField::create("{$name}/folder");
 
         // If we haven't uploaded to a folder yet, set to the default foldername
-        if (!$this->selectField->Value()) {
+        if (!$this->selectField->getValue()) {
             $folderID = $this->folderIDFromPath($this->getDefaultFolderName());
             if ($folderID) {
                 $this->selectField->setValue($folderID);
@@ -240,7 +240,7 @@ class SelectUploadField extends UploadField
     {
         // Ensure that, if this member is allowed, the persistant folder overrides any default set
         if ($this->getCanSelectFolder()) {
-            $path = $this->folderPathFromID($this->selectField->Value());
+            $path = $this->folderPathFromID($this->selectField->getValue());
             if ($path !== false) {
                 return $path;
             }
